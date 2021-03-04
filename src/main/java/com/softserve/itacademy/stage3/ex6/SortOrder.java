@@ -1,2 +1,5 @@
-package com.softserve.itacademy.stage3.ex6;public enum SortOrder {
+package com.softserve.itacademy.stage3.ex6;
+
+public enum SortOrder {
+    ASC, DESC
 }
