@@ -18,6 +18,7 @@ public class Pizza {
     public String getSeafood() {
         return seafood;
     }
+
     public String getVegetable() {
         return vegetable;
     }

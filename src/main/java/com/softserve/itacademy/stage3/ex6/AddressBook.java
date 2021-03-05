@@ -1,11 +1,10 @@
 package com.softserve.itacademy.stage3.ex6;
 
-import java.util.Iterator;
-import java.util.Objects;
+import java.util.*;
 
 public class AddressBook implements Iterable {
 
-    private int counter;
+    private int counter = 0;
     private NameAddressPair[] addressBook;
 
     public AddressBook(int capacity) {
@@ -13,31 +12,90 @@ public class AddressBook implements Iterable {
     }
 
     public boolean create(String firstName, String lastName, String address) {
-        return true;
+        NameAddressPair.Person personCreated = new NameAddressPair.Person(firstName, lastName);
+        int i = 0;
+        for (NameAddressPair pair: addressBook) {
+            if (pair.person.equals(personCreated)) i++;
+        }
+        if (i == 0) {
+            Arrays.asList(addressBook).add(new NameAddressPair(personCreated, address));
+            counter++;
+            return true;
+        }
+        return false;
     }
 
     public String read(String firstName, String lastName) {
-        return null;
+        String address = "-";
+        NameAddressPair.Person personRead = new NameAddressPair.Person(firstName, lastName);
+        for(NameAddressPair pair: addressBook) {
+            if (pair.person.equals(personRead)) address = pair.address;
+        }
+        return String.format("(%s, %s) => %s", firstName, lastName, address);
     }
 
     public boolean update(String firstName, String lastName, String address) {
-        return true;
+        NameAddressPair.Person personUpdated = new NameAddressPair.Person(firstName, lastName);
+        for(NameAddressPair pair : addressBook) {
+            if (pair.person.equals(personUpdated)) {
+                pair.address = address;
+                return true;
+            }
+        }
+        return false;
     }
 
     public boolean delete(String firstName, String lastName) {
-        return true;
+        NameAddressPair.Person personDeleted = new NameAddressPair.Person(firstName, lastName);
+        for(NameAddressPair pair : addressBook) {
+            if (pair.person.equals(personDeleted)) {
+                Arrays.asList(addressBook).remove(pair);
+                counter--;
+                return true;
+            }
+        }
+        return false;
     }
 
     public int size() {
-        return 0;
+        return addressBook.length;
     }
 
-    public void sortedBy(SortOrder order) {}
+    public void sortedBy(SortOrder order) {
+        switch(order) {
+            case ASC:
+                Arrays.sort(addressBook, new Comparator<NameAddressPair>() {
+                    @Override
+                    public int compare(final NameAddressPair o1, final NameAddressPair o2)
+                    {
+                        if (!o1.person.firstName.equals(o2.person.firstName)) {
+                            return o2.person.firstName.compareTo(o1.person.firstName);
+                        }
+                        else {
+                            return o2.person.lastName.compareTo(o1.person.lastName);
+                        }
+                    }
+                });
+            case DESC:
+                Arrays.sort(addressBook, new Comparator<NameAddressPair>() {
+                    @Override
+                    public int compare(final NameAddressPair o1, final NameAddressPair o2)
+                    {
+                        if (!o1.person.firstName.equals(o2.person.firstName)) {
+                            return o2.person.firstName.compareTo(o1.person.firstName);
+                        }
+                        else {
+                            return o2.person.lastName.compareTo(o1.person.lastName);
+                        }
+                    }
+                }.reversed());
+        }
+    }
 
     @Override
     public Iterator iterator()
     {
-        return null;
+        return new AddressBookIterator();
     }
 
     private static class NameAddressPair {
