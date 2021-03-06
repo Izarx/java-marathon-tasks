@@ -12,32 +12,39 @@ public class AddressBook implements Iterable {
     }
 
     public boolean create(String firstName, String lastName, String address) {
+
+        if (size() != 0 && counter == this.size()) {
+            NameAddressPair[] newAddressBook = new NameAddressPair[size() * 2];
+            System.arraycopy(addressBook, 0, newAddressBook, 0, size());
+            addressBook = newAddressBook;
+        }
+
         NameAddressPair.Person personCreated = new NameAddressPair.Person(firstName, lastName);
         int i = 0;
         for (NameAddressPair pair: addressBook) {
-            if (pair.person.equals(personCreated)) i++;
+            if (pair!= null && pair.person.equals(personCreated)) i++;
         }
         if (i == 0) {
-            Arrays.asList(addressBook).add(new NameAddressPair(personCreated, address));
-            counter++;
+            addressBook [counter ++] = new NameAddressPair(personCreated, address);
             return true;
         }
         return false;
     }
 
     public String read(String firstName, String lastName) {
-        String address = "-";
+        String address = null;
         NameAddressPair.Person personRead = new NameAddressPair.Person(firstName, lastName);
         for(NameAddressPair pair: addressBook) {
-            if (pair.person.equals(personRead)) address = pair.address;
+            if (pair!= null && pair.person.equals(personRead))
+                address = pair.address;
         }
-        return String.format("(%s, %s) => %s", firstName, lastName, address);
+        return address;
     }
 
     public boolean update(String firstName, String lastName, String address) {
         NameAddressPair.Person personUpdated = new NameAddressPair.Person(firstName, lastName);
         for(NameAddressPair pair : addressBook) {
-            if (pair.person.equals(personUpdated)) {
+            if (pair!= null && pair.person.equals(personUpdated)) {
                 pair.address = address;
                 return true;
             }
@@ -47,48 +54,69 @@ public class AddressBook implements Iterable {
 
     public boolean delete(String firstName, String lastName) {
         NameAddressPair.Person personDeleted = new NameAddressPair.Person(firstName, lastName);
-        for(NameAddressPair pair : addressBook) {
-            if (pair.person.equals(personDeleted)) {
-                Arrays.asList(addressBook).remove(pair);
-                counter--;
-                return true;
+        NameAddressPair[] newAddressBook = new NameAddressPair[size()];
+        boolean result = false;
+        int i = 0;
+
+        for(NameAddressPair pair : addressBook)
+        {
+            if(pair != null && pair.person.equals(personDeleted))
+            {
+                pair = null;
+                result = true;
+                counter --;
+            }
+            else if(pair != null)
+            {
+                newAddressBook[i++] = pair;
             }
         }
-        return false;
+
+        addressBook = newAddressBook;
+
+        return result;
     }
 
     public int size() {
-        return addressBook.length;
+        return counter;
     }
 
     public void sortedBy(SortOrder order) {
-        switch(order) {
-            case ASC:
-                Arrays.sort(addressBook, new Comparator<NameAddressPair>() {
-                    @Override
-                    public int compare(final NameAddressPair o1, final NameAddressPair o2)
-                    {
-                        if (!o1.person.firstName.equals(o2.person.firstName)) {
+
+        if (order.equals(SortOrder.ASC)) {
+            Arrays.sort(addressBook, new Comparator<NameAddressPair>() {
+                @Override
+                public int compare(final NameAddressPair o1, final NameAddressPair o2)
+                {
+                    if (o1 != null && o2 != null) {
+                        if (!o2.person.firstName.equals(o1.person.firstName)) {
+                            return o1.person.firstName.compareTo(o2.person.firstName);
+                        }
+                        else {
+                            return o1.person.lastName.compareTo(o2.person.lastName);
+                        }
+                    }
+                    else return 1;
+                }
+            });
+        }
+        else {
+            Arrays.sort(addressBook, new Comparator<NameAddressPair>(){
+
+                @Override
+                public int compare(final NameAddressPair o1, final NameAddressPair o2)
+                {
+                    if (o1 != null && o2 != null) {
+                        if (!o2.person.firstName.equals(o1.person.firstName)) {
                             return o2.person.firstName.compareTo(o1.person.firstName);
                         }
                         else {
                             return o2.person.lastName.compareTo(o1.person.lastName);
                         }
                     }
-                });
-            case DESC:
-                Arrays.sort(addressBook, new Comparator<NameAddressPair>() {
-                    @Override
-                    public int compare(final NameAddressPair o1, final NameAddressPair o2)
-                    {
-                        if (!o1.person.firstName.equals(o2.person.firstName)) {
-                            return o2.person.firstName.compareTo(o1.person.firstName);
-                        }
-                        else {
-                            return o2.person.lastName.compareTo(o1.person.lastName);
-                        }
-                    }
-                }.reversed());
+                    else return 1;
+                }
+            } );
         }
     }
 
@@ -98,9 +126,9 @@ public class AddressBook implements Iterable {
         return new AddressBookIterator();
     }
 
-    private static class NameAddressPair {
+     private static class NameAddressPair {
 
-        private Person person;
+        private final Person person;
         private String address;
 
         private NameAddressPair(final Person person, final String address)
@@ -140,8 +168,14 @@ public class AddressBook implements Iterable {
             {
                 return Objects.hash(firstName, lastName);
             }
+
         }
 
+        @Override
+        public String toString()
+        {
+            return String.format("First name: %s, Last name: %s, Address: %s", person.firstName, person.lastName, address);
+        }
     }
 
     private class AddressBookIterator implements Iterator {
@@ -151,13 +185,14 @@ public class AddressBook implements Iterable {
         @Override
         public boolean hasNext()
         {
-            return false;
+            return counter < size() && addressBook[counter] != null;
         }
 
         @Override
         public String next()
         {
-            return null;
+            NameAddressPair pair = addressBook[counter++];
+            return String.format("First name: %s, Last name: %s, Address: %s", pair.person.firstName, pair.person.lastName, pair.address);
         }
     }
 }
