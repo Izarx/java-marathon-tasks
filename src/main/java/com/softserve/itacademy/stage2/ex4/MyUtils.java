@@ -1,7 +1,5 @@
 package com.softserve.itacademy.stage2.ex4;
 
-import com.softserve.itacademy.stage2.ex3.Worker;
-import com.softserve.itacademy.stage2.ex6.Shape;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -46,7 +44,7 @@ public class MyUtils {
     public List<Employee> maxExperience (List<Employee> employees) {
         List<Employee> result = new ArrayList<>();
         employees.forEach(o -> {
-            if (o!=null & o.getExperience() == Collections.max(employees, Comparator.comparing(obj -> obj.getExperience())).getExperience()) result.add(o);
+            if (o!=null && o.getExperience() == Collections.max(employees, Comparator.comparing(obj -> obj.getExperience())).getExperience()) result.add(o);
         });
         return result;
     }
@@ -54,7 +52,7 @@ public class MyUtils {
     public List<Employee> maxPayment (List<Employee> employees) {
         List<Employee> result = new ArrayList<>();
         employees.forEach(o -> {
-            if (o!=null & o.getBasePayment() == Collections.max(employees, Comparator.comparing(obj -> obj.getBasePayment())).getBasePayment()) result.add(o);
+            if (o!=null && o.getBasePayment() == Collections.max(employees, Comparator.comparing(obj -> obj.getBasePayment())).getBasePayment()) result.add(o);
         });
         return result;
     }
