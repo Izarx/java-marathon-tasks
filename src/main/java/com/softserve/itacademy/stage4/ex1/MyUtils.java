@@ -9,17 +9,15 @@ public class MyUtils {
         Map<String, List<String>> noteBook = new HashMap<>();
 
         for (Map.Entry<String, String> pair : phones.entrySet()) {
-            if (pair !=null) {
-                List<String> phoneNumbers = noteBook.get(pair.getValue());
-                if (phoneNumbers != null) {
-                    phoneNumbers.add(pair.getKey());
-                    noteBook.put(pair.getValue(), phoneNumbers);
-                }
-                else {
-                    phoneNumbers = new ArrayList<>();
-                    phoneNumbers.add(pair.getKey());
-                    noteBook.put(pair.getValue(), phoneNumbers);
-                }
+            List<String> phoneNumbers = noteBook.get(pair.getValue());
+            if (phoneNumbers != null) {
+                phoneNumbers.add(pair.getKey());
+                noteBook.put(pair.getValue(), phoneNumbers);
+            }
+            else {
+                phoneNumbers = new ArrayList<>();
+                phoneNumbers.add(pair.getKey());
+                noteBook.put(pair.getValue(), phoneNumbers);
             }
         }
 
