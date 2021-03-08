@@ -13,7 +13,7 @@ public class AddressBook implements Iterable {
 
     public boolean create(String firstName, String lastName, String address) {
 
-        if (size() != 0 && counter == this.size()) {
+        if (size() != 0 && counter == addressBook.length) {
             NameAddressPair[] newAddressBook = new NameAddressPair[size() * 2];
             System.arraycopy(addressBook, 0, newAddressBook, 0, size());
             addressBook = newAddressBook;

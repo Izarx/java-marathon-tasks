@@ -62,11 +62,7 @@ public class Pizza {
         }
 
         public Pizza build() {
-            pizza = new Pizza();
-            addCheese("Mozarella");
-            addSeafood("Shrimps");
-            addVegetable("Tomato");
-            return pizza;
+            return new Pizza();
         }
 
     }

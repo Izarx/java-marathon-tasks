@@ -4,7 +4,7 @@ public class App {
 
     public static String drawLine(LineType lineType) {
         System.out.printf("The line is %s type", lineType.toString().toLowerCase());
-        return "";
+        return lineType.toString().toLowerCase();
     }
 
     public static void main(String[] args)
