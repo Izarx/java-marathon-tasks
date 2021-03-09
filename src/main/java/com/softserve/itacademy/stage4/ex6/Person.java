@@ -1,6 +1,7 @@
 package com.softserve.itacademy.stage4.ex6;
 
 public class Person {
+
     protected String name;
     protected int age;
 

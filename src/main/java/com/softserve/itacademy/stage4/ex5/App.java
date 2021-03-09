@@ -1,5 +1,6 @@
 package com.softserve.itacademy.stage4.ex5;
 
+
 public class App {
     public static void main(String[] args)
     {
@@ -7,4 +8,5 @@ public class App {
         double av1 = ArrayUtil.averageValue(set1);
         System.out.println(av1);
     }
+
 }
