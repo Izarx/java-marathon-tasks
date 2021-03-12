@@ -5,15 +5,7 @@ import java.util.*;
 public class MyUtils {
     public boolean listMapCompare(List<String> list, Map<String, String> map) {
         // Code
-        Set<String> setList = new HashSet<>();
-        Set<String> setMap = new HashSet<>();
-
-        if (list != null) setList.addAll(list);
-        if (map != null) setMap.addAll(map.values());
-
-        if (setList.equals(setMap)) return true;
-
-        return false;
+        return new HashSet<>(list).equals(new HashSet<>(map.values()));
     }
 
     public static void main(String[] args)

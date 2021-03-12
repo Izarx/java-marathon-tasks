@@ -58,9 +58,8 @@ public class MyUtils {
     }
     public Set<Student> commonStudents(List<Student> list1, List<Student> list2) {
         // Code
-        Set<Student> studentSet1 = new HashSet<>();
+        Set<Student> studentSet1 = new HashSet<>(list1);
         Set<Student> studentSet2 = new HashSet<>();
-        studentSet1.addAll(list1);
         for(Student student: list2) {
             if (student != null && !studentSet1.add(student)) studentSet2.add(student);
         }
