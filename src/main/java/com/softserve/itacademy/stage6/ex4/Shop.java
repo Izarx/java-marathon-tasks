@@ -9,9 +9,8 @@ public class Shop {
 
     public int sale(String product, int percent) {
         int i = 0;
-        DecisionMethod<String, Integer> goShopping = (v1, v2) -> v1 == product && v2 > percent;
         for(DecisionMethod<String, Integer> decisionMethod : clients) {
-            if (decisionMethod.method(product, percent) == goShopping.method("product1", 10)) i++;
+            if (decisionMethod.method(product, percent)) i++;
         }
         return i;
     }

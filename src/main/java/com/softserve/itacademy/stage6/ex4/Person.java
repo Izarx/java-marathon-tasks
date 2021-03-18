@@ -7,5 +7,5 @@ public class Person {
         this.name = name;
     }
 
-     DecisionMethod<String, Integer> goShopping = (v1, v2) -> v1=="product1" && v2 > 10;
+     DecisionMethod<String, Integer> goShopping = (v1, v2) -> v1.equals("product1") && v2 > 10;
 }
