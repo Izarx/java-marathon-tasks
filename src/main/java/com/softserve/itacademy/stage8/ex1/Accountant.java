@@ -5,7 +5,7 @@ import java.util.function.BinaryOperator;
 public class Accountant {
 
     public static int sum(int x, int y) {
-        ParallelCalculator run = new ParallelCalculator((p1, p2) -> p1 + p2, x, y);
+        ParallelCalculator run = new ParallelCalculator(Integer::sum, x, y);
         Thread thread = new Thread(run);
         thread.start();
         try
