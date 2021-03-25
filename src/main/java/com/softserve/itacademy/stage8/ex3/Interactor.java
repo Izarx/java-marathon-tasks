@@ -8,12 +8,12 @@ public class Interactor {
 
     public synchronized void serve(UnaryOperator<Integer> uo, int initializer)throws InterruptedException{
         //your implementation here
-        notify();
         System.out.println("Serving thread running");
         System.out.println("Serving thread initializes the key");
         x = uo.apply(initializer);
         System.out.println("key = " + x);
-        wait(1000);
+        notify();
+        wait();
         System.out.println("Serving thread resumed");
     }
 
@@ -23,5 +23,6 @@ public class Interactor {
         System.out.println("Consuming thread received the key. key = " + x);
         x = bo.apply(x, operand2);
         System.out.println("Consuming thread changed the key. key = " + x);
+        notify();
     }
 }

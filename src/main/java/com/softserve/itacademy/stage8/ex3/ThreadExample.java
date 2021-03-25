@@ -31,4 +31,9 @@ public class ThreadExample {
             e.printStackTrace();
         }
     }
+
+    public static void main(String[] args)
+    {
+        threadRun();
+    }
 }

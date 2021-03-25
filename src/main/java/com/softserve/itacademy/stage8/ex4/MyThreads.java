@@ -4,8 +4,8 @@ public class MyThreads {
     public final static Object den = new Object();
     public final static Object ada = new Object();
 
-    public volatile static int n;
-    public volatile static int m;
+    public static int n;
+    public static int m;
 
     public static Thread t1 = new Thread() {
         public void run() {
