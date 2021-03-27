@@ -8,8 +8,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface Review {
-
     public String reviewer();
     public String date() default "today";
-
 }
