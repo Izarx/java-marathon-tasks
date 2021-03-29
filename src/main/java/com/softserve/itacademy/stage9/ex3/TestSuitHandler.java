@@ -13,7 +13,6 @@ public class TestSuitHandler {
             if (!clazz.isAnnotationPresent(TestSuite.class)) {
                 throw new AnnotationNotFoundException("Class " + clazz.getSimpleName() + " isn't annotated");
             }
-            Arrays.asList(clazz.getMethods()).forEach(x -> System.out.println(x.getName()));
             List<String> methods = Arrays.asList(clazz.getDeclaredMethods()).stream()
                                                                     .filter(x -> x.getParameterCount() == 0)
                                                                     .filter(x -> Modifier.isPublic(x.getModifiers()))
