@@ -36,7 +36,7 @@ public class App {
             System.out.println(t2.getNano() - t1.getNano());
             System.out.println(util.getRoleId("DevOps"));
             util.getAllDirestion().forEach(System.out::println);
-            // util.dropTable("Roles");
+            util.dropTable("Roles");
         }
         catch(SQLException throwables)
         {

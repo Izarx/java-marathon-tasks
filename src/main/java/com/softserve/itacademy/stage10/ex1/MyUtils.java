@@ -49,40 +49,36 @@ public class MyUtils {
     public void createTableRoles() throws SQLException {
         // code
         statement.executeUpdate("CREATE TABLE Roles(" +
-                                        "id bigint NOT null AUTO_INCREMENT unique," +
-                                        " roleName VARCHAR," +
-                                        " PRIMARY KEY ( id ))");
+                                        "id SERIAL PRIMARY KEY," +
+                                        " roleName VARCHAR)");
     }
     public void createTableDirections() throws SQLException {
         // code
         statement.executeUpdate("CREATE TABLE Directions(" +
-                                        "id bigint NOT null AUTO_INCREMENT unique," +
-                                        " directionName VARCHAR," +
-                                        " PRIMARY KEY ( id ))");
+                                        "id SERIAL PRIMARY KEY," +
+                                        " directionName VARCHAR)");
     }
     public void createTableProjects() throws SQLException {
         // code
         statement.executeUpdate("CREATE TABLE Projects(" +
-                                        "id bigint NOT null AUTO_INCREMENT unique," +
+                                        "id SERIAL PRIMARY KEY," +
                                         " projectName VARCHAR," +
-                                        " directionId bigint," +
-                                        " PRIMARY KEY ( id )," +
-                                        " CONSTRAINT project_direction_id FOREIGN KEY (directionId) REFERENCES Directions(id))");
+                                        " directionId BIGINT," +
+                                        " FOREIGN KEY (directionId) REFERENCES Directions(id))");
     }
     public void createTableEmployee() throws SQLException {
         // code
         statement.executeUpdate("CREATE TABLE Employee(" +
-                                        "id bigint NOT null AUTO_INCREMENT unique," +
+                                        "id SERIAL PRIMARY KEY," +
                                         " firstName VARCHAR," +
-                                        " roleId bigint," +
-                                        " projectId bigint," +
-                                        " PRIMARY KEY ( id )," +
-                                        " CONSTRAINT employee_role_id FOREIGN KEY (roleId) REFERENCES Roles(id)," +
-                                        " CONSTRAINT employee_project_id FOREIGN KEY (projectId) REFERENCES Projects(id))");
+                                        " roleId BIGINT," +
+                                        " projectId BIGINT," +
+                                        " FOREIGN KEY (roleId) REFERENCES Roles(id)," +
+                                        " FOREIGN KEY (projectId) REFERENCES Projects(id))");
     }
     public void dropTable(String tableName) throws SQLException {
         // code
-        statement.executeUpdate(String.format("DROP TABLE IF EXISTS %s, CASCADE", tableName));
+        statement.executeUpdate(String.format("DROP TABLE IF EXISTS %s CASCADE", tableName));
     }
     public void insertTableRoles(String roleName) throws SQLException {
         // code
@@ -207,9 +203,8 @@ public class MyUtils {
         ResultSet setJavaDevelopers =
                 statement.executeQuery(String.format("SELECT Employee.firstName,  " +
                                                              "FROM Employee " +
-                                                             "JOIN Roles ON roleId = Roles.id " +
-                                                             "JOIN Projects ON projectId = Projects.id " +
-                                                             "JOIN Directions ON Directions.id = Projects.directionId " +
+                                                             "INNER JOIN Projects ON projectId = Projects.id " +
+                                                             "INNER JOIN Directions ON Directions.id = Projects.directionId " +
                                                              "WHERE Projects.directionId = %s " +
                                                              "AND Employee.roleId = %s", getDirectionId("Java")
                                                               , getRoleId("Developer")));
