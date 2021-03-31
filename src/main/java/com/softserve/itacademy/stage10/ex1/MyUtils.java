@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MyUtils {
     private Connection connection;
@@ -93,9 +94,13 @@ public class MyUtils {
     }
     public void insertTableProjects(String projectName, String directionName) throws SQLException {
         // code
+        statement.executeUpdate(String.format("INSERT INTO Projects (projectName, directionId)" +
+                                                      " VALUES ('%s', '%d')", projectName, getDirectionId(directionName)));
     }
     public void insertTableEmployee(String firstName, String roleName, String projectName) throws SQLException {
         // code
+        statement.executeUpdate(String.format("INSERT INTO Employee (firstName, roleId, projectId)" +
+                                                      " VALUES ('%s', '%d', '%d')", firstName, getRoleId(roleName), getProjectId(projectName)));
     }
     public int getRoleId(String roleName) throws SQLException {
         // code
@@ -117,10 +122,20 @@ public class MyUtils {
     }
     public int getProjectId(String projectName) throws SQLException {
         // code
+        ResultSet setRoles = statement.executeQuery("SELECT id, projectName FROM Projects");
+        while(setRoles.next()) {
+            if (setRoles.getString("projectName").equals(projectName))
+                return setRoles.getInt("id");
+        }
         return 0;
     }
     public int getEmployeeId(String firstName) throws SQLException {
         // code
+        ResultSet setRoles = statement.executeQuery("SELECT id, firstName FROM Employee");
+        while(setRoles.next()) {
+            if (setRoles.getString("firstName").equals(firstName))
+                return setRoles.getInt("id");
+        }
         return 0;
     }
     public List<String> getAllRoles() throws SQLException {
@@ -145,22 +160,62 @@ public class MyUtils {
     }
     public List<String> getAllProjects() throws SQLException {
         // code
-        return null;
+        List<String> listProjects = new ArrayList<>();
+        ResultSet setProjects = statement.executeQuery("SELECT projectName " +
+                                                               "FROM Projects");
+        while(setProjects.next()) {
+            listProjects.add(setProjects.getString("projectName"));
+        }
+        return listProjects;
     }
     public List<String> getAllEmployee() throws SQLException {
         // code
-        return null;
+        List<String> listEmployees = new ArrayList<>();
+        ResultSet setEmployees = statement.executeQuery("SELECT firstName " +
+                                                               "FROM Employee");
+        while(setEmployees.next()) {
+            listEmployees.add(setEmployees.getString("firstName"));
+        }
+        return listEmployees;
     }
     public List<String> getAllDevelopers() throws SQLException {
         // code
-        return null;
+        List<String> listDevelopers = new ArrayList<>();
+        ResultSet setDevelopers = statement.executeQuery(String.format("SELECT firstName " +
+                                                                               "FROM Employee " +
+                                                                               "WHERE roleId = %s", getRoleId("Developer")));
+        while(setDevelopers.next()){
+            listDevelopers.add(setDevelopers.getString("firstName"));
+        }
+        return listDevelopers;
     }
     public List<String> getAllJavaProjects() throws SQLException {
         // code
-        return null;
+        List<String> listJavaProjects = new ArrayList<>();
+        ResultSet setJavaProjects =
+                statement.executeQuery(String.format("SELECT projectName " +
+                                                             "FROM Projects " +
+                                                             "WHERE directionId = %s", getDirectionId("Java")));
+        while(setJavaProjects.next()){
+            listJavaProjects.add(setJavaProjects.getString("projectName"));
+        }
+        return listJavaProjects;
     }
     public List<String> getAllJavaDevelopers() throws SQLException {
         // code
-        return null;
+        List<String> listJavaDevelopers = new ArrayList<>();
+        ResultSet setJavaDevelopers =
+                statement.executeQuery(String.format("SELECT Employee.firstName,  " +
+                                                             "FROM Employee " +
+                                                             "JOIN Roles ON roleId = Roles.id " +
+                                                             "JOIN Projects ON projectId = Projects.id " +
+                                                             "JOIN Directions ON Directions.id = Projects.directionId " +
+                                                             "WHERE Projects.directionId = %s " +
+                                                             "AND Employee.roleId = %s", getDirectionId("Java")
+                                                              , getRoleId("Developer")));
+        while(setJavaDevelopers.next()) {
+            listJavaDevelopers.add(setJavaDevelopers.getString("firstName"));
+        }
+        return listJavaDevelopers;
     }
 }
