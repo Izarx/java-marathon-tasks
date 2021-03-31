@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class MyUtils {
     private Connection connection;
@@ -49,21 +48,28 @@ public class MyUtils {
     public void createTableRoles() throws SQLException {
         // code
         statement.executeUpdate("CREATE TABLE Roles(" +
-                                        "id SERIAL PRIMARY KEY," +
-                                        " roleName VARCHAR)");
+                                        "id SERIAL," +
+                                        " roleName VARCHAR," +
+                                        " CONSTRAINT rolesPk" +
+                                        " PRIMARY KEY (id))");
     }
     public void createTableDirections() throws SQLException {
         // code
         statement.executeUpdate("CREATE TABLE Directions(" +
-                                        "id SERIAL PRIMARY KEY," +
-                                        " directionName VARCHAR)");
+                                        "id SERIAL," +
+                                        " directionName VARCHAR," +
+                                        " CONSTRAINT directionsPk" +
+                                        " PRIMARY KEY (id))");
     }
     public void createTableProjects() throws SQLException {
         // code
         statement.executeUpdate("CREATE TABLE Projects(" +
-                                        "id SERIAL PRIMARY KEY," +
+                                        "id SERIAL," +
                                         " projectName VARCHAR," +
                                         " directionId BIGINT," +
+                                        " CONSTRAINT projectsPk" +
+                                        " PRIMARY KEY (id)," +
+                                        " CONSTRAINT projectsDirectionsFk" +
                                         " FOREIGN KEY (directionId) REFERENCES Directions(id))");
     }
     public void createTableEmployee() throws SQLException {
@@ -73,7 +79,9 @@ public class MyUtils {
                                         " firstName VARCHAR," +
                                         " roleId BIGINT," +
                                         " projectId BIGINT," +
+                                        " CONSTRAINT employeeRolesFk" +
                                         " FOREIGN KEY (roleId) REFERENCES Roles(id)," +
+                                        " CONSTRAINT employeeProjectsFk" +
                                         " FOREIGN KEY (projectId) REFERENCES Projects(id))");
     }
     public void dropTable(String tableName) throws SQLException {
